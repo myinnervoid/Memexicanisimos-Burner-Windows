@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Entornos virtuales
+build_venv/
+venv/
+env/
+.env
+
+# PyInstaller / Build
+build/
+dist/
+*.spec
+
+# Archivos de la aplicación y logs locales
+*.log
+/mnt_iso_temp/
+/mnt_usb_temp/
+/tmp/mem_burner_*
+
+# Archivos de configuración locales del editor
+.vscode/
+.idea/
+.project
+.pydevproject

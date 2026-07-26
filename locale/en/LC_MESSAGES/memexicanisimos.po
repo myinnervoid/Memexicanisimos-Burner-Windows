@@ -1,0 +1,149 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: memexicanisimos 1.2.0\n"
+"POT-Creation-Date: 2026-07-26 06:10-0500\n"
+"PO-Revision-Date: 2026-07-26 06:10-0500\n"
+"Last-Translator: myinnervoid <myinnervoid@users.noreply.github.com>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Aplicación en ejecución"
+msgstr "Application already running"
+
+msgid "Memexicanisimos Burner ya está abierto.\nCierra la otra ventana primero."
+msgstr "Memexicanisimos Burner is already open.\nClose the other window first."
+
+msgid "Grabador de Windows ISO (UEFI/Secure Boot)"
+msgstr "Windows ISO Burner (UEFI/Secure Boot)"
+
+msgid "1️⃣  Selecciona la ISO de Windows"
+msgstr "1️⃣  Select Windows ISO"
+
+msgid "Buscar"
+msgstr "Browse"
+
+msgid "2️⃣  Elige la memoria USB (¡se borrará todo!)"
+msgstr "2️⃣  Choose USB drive (everything will be deleted!)"
+
+msgid "Analizando..."
+msgstr "Analyzing..."
+
+msgid "⟳ Refrescar"
+msgstr "⟳ Refresh"
+
+msgid "⚙️ Opciones avanzadas"
+msgstr "⚙️ Advanced options"
+
+msgid "💾 Drivers adicionales (VMD/RST)"
+msgstr "💾 Additional drivers (VMD/RST)"
+
+msgid "Carpeta con drivers extraídos"
+msgstr "Folder with extracted drivers"
+
+msgid "📋 Mostrar detalles técnicos"
+msgstr "📋 Show technical details"
+
+msgid "⚠️ Crear USB booteable"
+msgstr "⚠️ Create bootable USB"
+
+msgid "Cancelar"
+msgstr "Cancel"
+
+msgid "⚙️ Ocultar opciones avanzadas"
+msgstr "⚙️ Hide advanced options"
+
+msgid "📋 Ocultar detalles técnicos"
+msgstr "📋 Hide technical details"
+
+msgid "No se detectaron USBs"
+msgstr "No USB drives detected"
+
+msgid "Grabando..."
+msgstr "Burning..."
+
+msgid "✔️ Completado"
+msgstr "✔️ Completed"
+
+msgid "❌ Falló"
+msgstr "❌ Failed"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Selecciona una ISO válida."
+msgstr "Select a valid ISO."
+
+msgid "Selecciona una USB válida."
+msgstr "Select a valid USB."
+
+msgid "No se detectaron"
+msgstr "No USB drives detected"
+
+msgid "¡ADVERTENCIA!"
+msgstr "WARNING!"
+
+msgid "Se borrará todo el contenido de:\n{device}\n\n¿Continuar?"
+msgstr "All data on {device} will be erased.\n\nContinue?"
+
+msgid "Permisos"
+msgstr "Permissions"
+
+msgid "Debes ejecutar esta aplicación con permisos de administrador.\nUsa el lanzador burner.sh"
+msgstr "You must run this application with administrative privileges.\nUse the burner.sh launcher."
+
+msgid "Éxito"
+msgstr "Success"
+
+msgid "USB booteable creada correctamente."
+msgstr "Bootable USB created successfully."
+
+msgid "Ocurrió un error al crear la USB."
+msgstr "An error occurred while creating the USB."
+
+msgid "Ocurrió un error:\n{err_msg}"
+msgstr "An error occurred:\n{err_msg}"
+
+msgid "Faltan las siguientes herramientas requeridas:\n\n"
+msgstr "The following required tools are missing:\n\n"
+
+msgid "\n¿Quieres instalarlas automáticamente?"
+msgstr "\nDo you want to install them automatically?"
+
+msgid "Dependencias necesarias"
+msgstr "Required dependencies"
+
+msgid "No se detectó un gestor de paquetes soportado. Instala de forma manual."
+msgstr "No supported package manager detected. Install manually."
+
+msgid "Instalando dependencias..."
+msgstr "Installing dependencies..."
+
+msgid "Listo"
+msgstr "Done"
+
+msgid "Dependencias instaladas correctamente."
+msgstr "Dependencies installed successfully."
+
+msgid "Fallo al instalar dependencias:\n{err}"
+msgstr "Failed to install dependencies:\n{err}"
+
+msgid "Actualización disponible"
+msgstr "Update available"
+
+msgid "Hay una nueva versión ({version}). ¿Abrir página de descarga?"
+msgstr "A new version ({version}) is available. Open download page?"
+
+msgid "❓ Ayuda"
+msgstr "❓ Help"
+
+msgid "=== Memexicanisimos Burner - Manual de Ayuda ===\n\n1. ¿Por qué no detecta las USBs o da errores?\nEsta aplicación requiere ejecutarse con privilegios de superusuario (root) para poder formatear, particionar y escribir de forma directa en las unidades de disco físicas.\nSolución: Cierra esta ventana y ejecuta el programa mediante el lanzador 'burner.sh' (el cual te solicitará la contraseña de administrador gráficamente) o a través de terminal con 'sudo ./burner'.\n\n2. ¿Cómo funciona el grabado?\nPaso 1: Selecciona una imagen ISO oficial de Windows 10 u 11.\nPaso 2: Introduce una memoria USB de al menos 8 GB (¡Se borrará todo su contenido!).\nPaso 3: (Opcional) Si tu computadora es nueva y no detecta el disco duro SSD durante la instalación de Windows, activa 'Opciones avanzadas' y busca una carpeta con los drivers VMD/RST extraídos.\nPaso 4: Haz clic en 'Crear USB booteable'."
+msgstr "=== Memexicanisimos Burner - Help Manual ===\n\n1. Why are USBs not detected or errors occurring?\nThis application requires root privileges to format, partition, and write directly to physical drive devices.\nSolution: Close this window and run the program via 'burner.sh' launcher (which will request the admin password graphically) or via terminal with 'sudo ./burner'.\n\n2. How does the burning process work?\nStep 1: Select a valid official Windows 10 or 11 ISO image.\nStep 2: Connect a USB flash drive of at least 8 GB (All content will be erased!).\nStep 3: (Optional) If your computer is new and does not detect the SSD storage drive during Windows installation, activate 'Advanced options' and browse to a folder containing extracted VMD/RST drivers.\nStep 4: Click 'Create bootable USB'."
+
+msgid "Ayuda"
+msgstr "Help"
+
+msgid "Advertencia: La aplicación se inició sin privilegios de administrador. Muchas funciones como escaneo y grabado no funcionarán correctamente. Usa burner.sh para ejecutarla."
+msgstr "Warning: The application was started without administrator privileges. Many features such as scanning and writing will not function properly. Use burner.sh to run it."

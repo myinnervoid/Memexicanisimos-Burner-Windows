@@ -1,0 +1,82 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-translate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-state: '3.13'
+
+    - name: Install Linting & Translation tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gettext
+        pip install flake8
+
+    - name: Run Linting
+      run: |
+        # Validar sintaxis y estilo básico de PEP8
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: Compile and Validate Translations (i18n)
+      run: |
+        # Validar catálogos .po y compilarlos a .mo
+        if [ -f locale/es/LC_MESSAGES/memexicanisimos.po ]; then
+          msgfmt -c locale/es/LC_MESSAGES/memexicanisimos.po -o locale/es/LC_MESSAGES/memexicanisimos.mo
+        else
+          echo "No se encontró el archivo de traducción al español."
+        fi
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt -r requirements-dev.txt
+
+    - name: Run pytest (skipping sudo tests automatically)
+      run: |
+        pytest tests/
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install packaging dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build Portable Package
+      run: |
+        chmod +x build_portable.sh
+        ./build_portable.sh
+
+    - name: Upload Distribution Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Memexicanisimos-Burner-v1.2.0-Portable
+        path: dist/Memexicanisimos-Burner.tar.gz
