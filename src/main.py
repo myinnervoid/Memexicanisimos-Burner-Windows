@@ -63,7 +63,6 @@ class MemexicanisimosBurner(ctk.CTk):
     """Clase principal de la aplicación GUI."""
     def __init__(self):
         """Inicializa la aplicación principal."""
-    def __init__(self):
         super().__init__()
 
         # --- Prevención de múltiples instancias ---
@@ -460,7 +459,7 @@ class MemexicanisimosBurner(ctk.CTk):
             subprocess.run(["pkexec"] + cmd, check=True)
             messagebox.showinfo(_("Listo"), _("Dependencias instaladas correctamente."))
         except Exception as exc:  # pylint: disable=broad-exception-caught
-            messagebox.showerror(_("Error"), _("Fallo: {exc}").format(exc=exc))
+            messagebox.showerror(_("Error"), _("Fallo: {exc}").format(exc=str(exc)))
 
     # -------------------- Actualizaciones --------------------
     def check_for_updates(self):
