@@ -1,5 +1,5 @@
+"""Módulo para el manejo de las dependencias del sistema."""
 import shutil
-import subprocess
 
 TOOLS = {
     "wimsplit": "wimtools",
@@ -21,8 +21,8 @@ def get_install_command(packages):
     """Construye el comando de instalación basado en el gestor de paquetes de la distro."""
     if shutil.which("apt"):
         return ["apt-get", "install", "-y"] + packages
-    elif shutil.which("dnf"):
+    if shutil.which("dnf"):
         return ["dnf", "install", "-y"] + packages
-    elif shutil.which("pacman"):
+    if shutil.which("pacman"):
         return ["pacman", "-S", "--noconfirm"] + packages
     return None
