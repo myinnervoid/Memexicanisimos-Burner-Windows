@@ -1,24 +1,27 @@
-import customtkinter as ctk
+"""Módulo principal de la aplicación."""
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
 import subprocess
 import threading
-import psutil
 import sys
 import signal
 import logging
 import urllib.request
 import json
 
-from src.utils.i18n import setup_i18n
-# Inicializar internacionalización al principio
-_ = setup_i18n()
+import customtkinter as ctk
+import psutil
 
+from src.utils.i18n import setup_i18n
 from src.ui import design_tokens as dt
 from src.core.burner_core import BurnerEngine
 from src.core.dependencies import get_missing_dependencies, get_package_names, get_install_command
 from src.utils.notifications import send_notification
+
+# Inicializar internacionalización al principio
+_ = setup_i18n()
+
 
 # -------------------- Configuración global --------------------
 ctk.set_appearance_mode("System")
@@ -44,16 +47,22 @@ class StatusIndicator(tk.Canvas):
         if parent_bg == "transparent" or parent_bg is None:
             parent_bg = parent.winfo_toplevel().cget("fg_color")
         bg_hex = parent._apply_appearance_mode(parent_bg)
-        
+
         super().__init__(parent, width=size, height=size, bg=bg_hex, highlightthickness=0, **kwargs)
         self.size = size
         self.oval = self.create_oval(1, 1, size-1, size-1, fill=color, outline="")
-        
+
     def set_color(self, color):
         self.itemconfig(self.oval, fill=color)
 
 # -------------------- Clase principal --------------------
+
+
+
 class MemexicanisimosBurner(ctk.CTk):
+    """Clase principal de la aplicación GUI."""
+    def __init__(self):
+        """Inicializa la aplicación principal."""
     def __init__(self):
         super().__init__()
 
@@ -109,11 +118,12 @@ class MemexicanisimosBurner(ctk.CTk):
                         sys.exit(0)
             with open(LOCK_FILE, 'w') as f:
                 f.write(str(os.getpid()))
-        except Exception as e:
-            logging.error(f"Lock file error: {e}")
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            logging.error(f"Lock file error: {exc}")
 
     # -------------------- Interfaz de usuario --------------------
     def setup_ui(self):
+        """Configura los elementos de la interfaz gráfica."""
         # Contenedor principal con scroll adaptable
         self.main_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
         self.main_frame.pack(fill="both", expand=True, padx=15, pady=15)
@@ -143,12 +153,12 @@ class MemexicanisimosBurner(ctk.CTk):
         card1 = self.create_card(_("1️⃣  Selecciona la ISO de Windows"))
         iso_frame = ctk.CTkFrame(card1, fg_color="transparent")
         iso_frame.pack(fill="x", pady=(10, 0))
-        
+
         self.iso_entry = ctk.CTkEntry(iso_frame, textvariable=self.iso_path,
                                       placeholder_text="/ruta/a/windows.iso",
                                       font=dt.FONT_BASE)
         self.iso_entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
-        
+
         self.btn_iso_browse = ctk.CTkButton(iso_frame, text=_("Buscar"), width=100, font=dt.FONT_BASE, command=self.select_iso)
         self.btn_iso_browse.pack(side="right")
 
@@ -156,11 +166,11 @@ class MemexicanisimosBurner(ctk.CTk):
         card2 = self.create_card(_("2️⃣  Elige la memoria USB (¡se borrará todo!)"))
         usb_frame = ctk.CTkFrame(card2, fg_color="transparent")
         usb_frame.pack(fill="x", pady=(10, 0))
-        
+
         self.usb_menu = ctk.CTkOptionMenu(usb_frame, variable=self.selected_usb,
                                           values=[_("Analizando...")], font=dt.FONT_BASE)
         self.usb_menu.pack(side="left", fill="x", expand=True, padx=(0, 10))
-        
+
         self.btn_usb_refresh = ctk.CTkButton(usb_frame, text=_("⟳ Refrescar"), width=100, font=dt.FONT_BASE,
                                              fg_color=dt.COLOR_CANCEL, hover_color=dt.COLOR_CANCEL_HOVER,
                                              command=self.refresh_usb_list)
@@ -179,11 +189,11 @@ class MemexicanisimosBurner(ctk.CTk):
         card3 = self.create_card(_("💾 Drivers adicionales (VMD/RST)"), parent=self.advanced_frame)
         driver_frame = ctk.CTkFrame(card3, fg_color="transparent")
         driver_frame.pack(fill="x", pady=(10, 0))
-        
+
         self.driver_entry = ctk.CTkEntry(driver_frame, textvariable=self.driver_path,
                                          placeholder_text=_("Carpeta con drivers extraídos"), font=dt.FONT_BASE)
         self.driver_entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
-        
+
         self.btn_driver_browse = ctk.CTkButton(driver_frame, text=_("Buscar"), width=100, font=dt.FONT_BASE, command=self.select_driver_folder)
         self.btn_driver_browse.pack(side="right")
 
@@ -267,11 +277,13 @@ class MemexicanisimosBurner(ctk.CTk):
         messagebox.showinfo(_("Ayuda"), help_msg)
 
     def select_iso(self):
+        """Abre un diálogo para seleccionar el archivo ISO."""
         filename = filedialog.askopenfilename(filetypes=[("Archivos ISO", "*.iso")])
         if filename:
             self.iso_path.set(filename)
 
     def select_driver_folder(self):
+        """Abre un diálogo para seleccionar la carpeta de drivers."""
         folder = filedialog.askdirectory()
         if folder:
             self.driver_path.set(folder)
@@ -295,8 +307,8 @@ class MemexicanisimosBurner(ctk.CTk):
             else:
                 self.selected_usb.set(devices[0])
             self.usb_menu.configure(values=devices)
-        except Exception as e:
-            self.log(f"Error escaneando USBs: {e}")
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            self.log(f"Error escaneando USBs: {exc}")
 
     # -------------------- Máquina de Estados de la UI --------------------
     def set_ui_state(self, state: str):
@@ -339,10 +351,12 @@ class MemexicanisimosBurner(ctk.CTk):
 
     # -------------------- Logging seguro --------------------
     def log(self, message):
+        """Agrega un mensaje al log de forma segura para hilos."""
         logging.info(message)
         self.after(0, self._log_internal, message)
 
     def _log_internal(self, message):
+        """Método interno para actualizar el widget de log."""
         self.log_box.configure(state="normal")
         self.log_box.insert("end", f"> {message}\n")
         self.log_box.see("end")
@@ -350,6 +364,7 @@ class MemexicanisimosBurner(ctk.CTk):
 
     # -------------------- Hilos y Callbacks del Motor --------------------
     def start_process_thread(self):
+        """Inicia el hilo para la creación del USB booteable."""
         if self.is_working: return
 
         iso = self.iso_path.get()
@@ -378,34 +393,41 @@ class MemexicanisimosBurner(ctk.CTk):
         threading.Thread(target=self.run_engine, daemon=True).start()
 
     def run_engine(self):
+        """Ejecuta el motor de grabación."""
         try:
             self.engine.execute(self.on_progress, self.on_log)
             self.after(0, self.on_success)
-        except Exception as e:
-            self.after(0, self.on_error, str(e))
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            self.after(0, self.on_error, str(exc))
 
     def cancel_operation(self):
+        """Cancela la operación en curso."""
         if self.engine:
             self.engine.cancel()
         self.set_ui_state("IDLE")
 
     # Callbacks thread-safe delegados con safe_ui_update (after)
     def on_progress(self, phase, val):
+        """Actualiza la barra de progreso de forma segura."""
         self.after(0, self._safe_on_progress, phase, val)
 
     def _safe_on_progress(self, phase, val):
+        """Actualiza la interfaz con el progreso actual."""
         self.phase_label.configure(text=phase)
         self.progress_bar.set(val)
 
     def on_log(self, msg):
+        """Actualiza el registro de eventos."""
         self.log(msg)
 
     def on_success(self):
+        """Maneja el evento de éxito en la grabación."""
         self.set_ui_state("SUCCESS")
         send_notification(_("Éxito"), _("USB booteable creada correctamente."), "normal")
         messagebox.showinfo(_("Éxito"), _("USB booteable creada correctamente."))
 
     def on_error(self, err_msg):
+        """Maneja los errores ocurridos en la grabación."""
         self.set_ui_state("ERROR")
         if err_msg != "Operación cancelada":
             send_notification(_("Error"), _("Ocurrió un error al crear la USB."), "critical")
@@ -413,6 +435,7 @@ class MemexicanisimosBurner(ctk.CTk):
 
     # -------------------- Dependencias --------------------
     def check_system_requirements(self):
+        """Verifica que las dependencias estén instaladas."""
         missing = get_missing_dependencies()
         if missing:
             msg = _("Faltan las siguientes herramientas requeridas:\n\n")
@@ -423,9 +446,10 @@ class MemexicanisimosBurner(ctk.CTk):
                 self.install_dependencies(missing)
 
     def install_dependencies(self, missing):
+        """Instala dependencias faltantes usando pkexec."""
         pkgs = get_package_names(missing)
         cmd = get_install_command(pkgs)
-        
+
         if cmd is None:
             messagebox.showerror(_("Error"), _("No se detectó un gestor de paquetes soportado. Instala de forma manual."))
             return
@@ -435,11 +459,12 @@ class MemexicanisimosBurner(ctk.CTk):
             # pkexec con listas de argumentos evita inyecciones de shell
             subprocess.run(["pkexec"] + cmd, check=True)
             messagebox.showinfo(_("Listo"), _("Dependencias instaladas correctamente."))
-        except Exception as e:
-            messagebox.showerror(_("Error"), _("Fallo al instalar dependencias:\n{err}").format(err=e))
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            messagebox.showerror(_("Error"), _("Fallo: {exc}").format(exc=exc))
 
     # -------------------- Actualizaciones --------------------
     def check_for_updates(self):
+        """Comprueba si hay actualizaciones en GitHub."""
         try:
             with urllib.request.urlopen(GITHUB_API_URL, timeout=2) as response:
                 data = json.loads(response.read().decode())
@@ -449,14 +474,15 @@ class MemexicanisimosBurner(ctk.CTk):
                                            _("Hay una nueva versión ({version}). ¿Abrir página de descarga?").format(version=latest)):
                         import webbrowser
                         webbrowser.open("https://github.com/myinnervoid/Memexicanisimos-Burner-Windows/releases/latest")
-        except:
+        except Exception:  # pylint: disable=broad-exception-caught
             pass
 
 # -------------------- Limpieza del lockfile al cerrar --------------------
 def cleanup_lock():
+    """Elimina el archivo de bloqueo al salir."""
     try:
         os.remove(LOCK_FILE)
-    except:
+    except Exception:  # pylint: disable=broad-exception-caught
         pass
 
 if __name__ == "__main__":
